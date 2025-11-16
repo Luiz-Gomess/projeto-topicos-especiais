@@ -1,7 +1,8 @@
 import pandas as pd
 
-df = pd.read_csv("data/hotel_bookings.csv")
-df.drop_duplicates(inplace=True)
+df = pd.read_csv("data/raw/hotel_bookings.csv")
+
+len(df)
 
 df.info()
 
@@ -9,6 +10,7 @@ df["company"].value_counts().to_csv("company.csv")
 
 # 31994 
 duplicated = df.duplicated().sum()
+df.drop_duplicates(inplace=True)
 
 df[["babies", "children", "adults"]].describe()
 
@@ -48,4 +50,19 @@ df_limpo = df_limpo[(df_limpo['adr']) > 0].copy()
 df_limpo.describe()
 
 
+### Engenharia de Feature
 
+## Disitribuição estatística da coluna 'adr'
+descritivo_adr = df_limpo['adr'].describe()
+
+q1 = descritivo_adr['25%']  # 74.0
+q2 = descritivo_adr['50%']  # 99.0
+q3 = descritivo_adr['75%']  # 135.0
+
+bins = [-float('inf'), q1, q2, q3, float('inf')]
+labels = ['Econômica', 'Padrão', 'Premium', 'Luxo']
+
+## Criando a coluna 'faixa_preco'
+df_limpo['faixa_preco'] = pd.cut(df_limpo['adr'], bins=bins, labels=labels, right=False)
+
+df_limpo.to_csv("data/processed/hotel_bookings_cleaned.csv")
