@@ -66,3 +66,5 @@ labels = ['Econômica', 'Padrão', 'Premium', 'Luxo']
 df_limpo['faixa_preco'] = pd.cut(df_limpo['adr'], bins=bins, labels=labels, right=False)
 
 df_limpo.to_csv("data/processed/hotel_bookings_cleaned.csv")
+
+print(df_limpo.columns)
