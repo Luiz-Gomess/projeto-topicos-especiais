@@ -8,7 +8,7 @@ df.info()
 
 df["company"].value_counts().to_csv("company.csv")
 
-# 31994 
+# 31994 linhas duplicadas encontradas e removidas
 duplicated = df.duplicated().sum()
 df.drop_duplicates(inplace=True)
 
